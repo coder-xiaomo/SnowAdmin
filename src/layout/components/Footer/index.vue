@@ -1,6 +1,6 @@
 <template>
   <a-layout-footer class="footer">
-    <div class="footer_title" @click="onFooter">2024 © SnowAdmin by 兔子先森</div>
+    <div class="footer_title" @click="onFooter">2025 © SnowAdmin by 兔子先森</div>
   </a-layout-footer>
 </template>
 
