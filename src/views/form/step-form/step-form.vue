@@ -13,7 +13,7 @@
         </a-row>
         <a-row justify="center" class="margin-top">
           <a-col :xs="18" :sm="12" :md="12" :lg="12" :xl="8" :xxl="8">
-            <a-form ref="formRef" auto-label-width :model="form" :rules="rules" @submit="handleSubmit">
+            <a-form ref="formRef" auto-label-width :layout="formLayout" :model="form" :rules="rules" @submit="handleSubmit">
               <div v-if="currentStep == 1">
                 <a-form-item field="name" label="活动名称">
                   <a-input v-model="form.name" placeholder="请输入活动名称" />
@@ -93,6 +93,9 @@
 </template>
 
 <script setup lang="ts">
+import { useLayoutModel } from "@/hooks/useLayoutModel";
+
+const { formLayout } = useLayoutModel();
 const loading = ref(false);
 const currentStep = ref(1);
 const form = ref({

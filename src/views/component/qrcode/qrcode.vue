@@ -1,27 +1,27 @@
 <template>
   <div class="snow-page">
-    <div class="snow-inner">
-      <a-row :gutter="24">
-        <a-col :span="12">
-          <div class="code-box">
-            <a-card v-for="item in codeList" :key="item.id" :title="item.docs" :style="{ width: '300px' }" hoverable>
-              <div class="card-content">
-                <s-qrcode-draw :tag="item.tag" :text="item.text" :options="item.options" />
-              </div>
-            </a-card>
+    <div class="snow-inner container">
+      <div class="code-box">
+        <a-card v-for="item in codeList" :key="item.id" :title="item.docs" :style="{ width: '300px' }" hoverable>
+          <div class="card-content">
+            <s-qrcode-draw :tag="item.tag" :text="item.text" :options="item.options" />
           </div>
-        </a-col>
-        <a-col :span="12">
-          <a-scrollbar style="height: 410px; overflow: auto">
-            <s-code-view :code-json="codeJson" style="width: 100%" />
-          </a-scrollbar>
-        </a-col>
-      </a-row>
+        </a-card>
+      </div>
+
+      <a-scrollbar style="height: 410px; overflow: auto" outer-class="scrollbar">
+        <s-code-view :code-json="codeJson" style="width: 100%" />
+      </a-scrollbar>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useDevicesSize } from "@/hooks/useDevicesSize";
+
+const { isMobile } = useDevicesSize();
+const gradColumns = computed(() => (isMobile.value ? 1 : 2));
+const codeWidth = computed(() => (isMobile.value ? "100%" : "500px"));
 const codeList = ref([
   {
     id: 1,
@@ -98,15 +98,24 @@ const codeJson = computed(() => JSON.stringify(codeList.value, null, "\t"));
 </script>
 
 <style lang="scss" scoped>
-.code-box {
+.container {
   display: flex;
   flex-wrap: wrap;
-  gap: $margin;
+  gap: $padding;
+}
+.code-box {
+  display: grid;
+  grid-template-columns: repeat(v-bind(gradColumns), 1fr);
+  gap: $padding $padding;
   .card-content {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 120px;
   }
+}
+.scrollbar {
+  width: v-bind(codeWidth);
+  height: 100%;
 }
 </style>

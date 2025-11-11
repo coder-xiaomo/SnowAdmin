@@ -60,7 +60,7 @@
           </a-table-column>
           <a-table-column title="描述" data-index="description" ellipsis tooltip></a-table-column>
           <a-table-column title="创建时间" data-index="createTime" :width="180"></a-table-column>
-          <a-table-column title="操作" :width="280" align="center" :fixed="isMobile ? '' : 'right'">
+          <a-table-column title="操作" :width="280" align="center" :fixed="tableFixed">
             <template #cell="{ record }">
               <a-space>
                 <a-button type="primary" status="success" size="mini" :disabled="record.admin" @click="onPrivileges(record)">
@@ -83,10 +83,10 @@
         </template>
       </a-table>
     </div>
-    <a-modal :width="layoutMode.width" v-model:visible="open" @close="afterClose" @ok="handleOk" @cancel="afterClose">
+    <a-modal :width="dialogWidth()" v-model:visible="open" @close="afterClose" @ok="handleOk" @cancel="afterClose">
       <template #title> {{ title }} </template>
       <div>
-        <a-form ref="formRef" auto-label-width :layout="layoutMode.layout" :rules="rules" :model="addFrom">
+        <a-form ref="formRef" auto-label-width :layout="formLayout" :rules="rules" :model="addFrom">
           <a-form-item field="name" label="角色名称" validate-trigger="blur">
             <a-input v-model="addFrom.name" placeholder="请输入角色名称" allow-clear />
           </a-form-item>
@@ -119,7 +119,7 @@
       </div>
     </a-modal>
 
-    <a-drawer :visible="drawerOpen" :width="isMobile ? '100%' : 500" @ok="drawerOk" @cancel="drawerCancel">
+    <a-drawer :visible="drawerOpen" :width="dialogWidth('500px', '100%')" @ok="drawerOk" @cancel="drawerCancel">
       <template #title> 分配权限 </template>
       <div>
         <a-card>
@@ -171,24 +171,11 @@
 import useGlobalProperties from "@/hooks/useGlobalProperties";
 import { getRoleAPI, getMenuListAPI, getUserPermissionAPI } from "@/api/modules/system/index";
 import { deepClone } from "@/utils";
-import { useDevicesSize } from "@/hooks/useDevicesSize";
+import { useLayoutModel } from "@/hooks/useLayoutModel";
 
 const proxy = useGlobalProperties();
 const openState = ref(dictFilter("status"));
-const { isMobile } = useDevicesSize();
-const layoutMode = computed(() => {
-  let info = {
-    mobile: {
-      width: "95%",
-      layout: "vertical"
-    },
-    desktop: {
-      width: "40%",
-      layout: "horizontal"
-    }
-  };
-  return isMobile.value ? info.mobile : info.desktop;
-});
+const { dialogWidth, formLayout, tableFixed } = useLayoutModel();
 const form = ref({
   name: "",
   code: "",

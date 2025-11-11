@@ -91,7 +91,7 @@
             </a-space>
           </template>
         </a-table-column>
-        <a-table-column title="操作" :width="200" fixed="right">
+        <a-table-column title="操作" :width="200" :fixed="tableFixed">
           <template #cell="cell">
             <a-space>
               <a-button size="mini" type="primary">详情</a-button>
@@ -110,7 +110,9 @@
 <script setup lang="ts">
 import { getDocumentLibraryTableAPI } from "@/api/modules/file/index";
 import { SelectedKeys, Form, Pagination, List } from "./config";
+import { useLayoutModel } from "@/hooks/useLayoutModel";
 
+const { tableFixed } = useLayoutModel();
 const form = ref<Form>({ name: "" });
 const selectedKeys = ref<string[]>([]);
 const rowSelection = reactive<SelectedKeys>({

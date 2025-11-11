@@ -1,7 +1,7 @@
 <template>
   <div class="snow-page">
     <div class="snow-inner">
-      <a-space align="start">
+      <a-space align="start" wrap>
         <a-card :style="{ width: '330px' }" title="垂直滚动-单列"> <vertical /> </a-card>
         <a-card :style="{ width: '330px' }" title="垂直滚动-网格">
           <vertical-grid />

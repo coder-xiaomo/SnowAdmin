@@ -2,11 +2,11 @@
   <div class="snow-page">
     <div class="snow-inner">
       <a-card title="浏览器检测-通过设备浏览器信息获取浏览器指纹">
-        <a-descriptions :column="1" :data="browserInfo" bordered />
+        <a-descriptions :layout="descriptionsLayout" :column="1" :data="browserInfo" bordered />
       </a-card>
       <br />
       <a-card title="移动设备">
-        <a-descriptions :column="1" :data="mobileFinger" bordered />
+        <a-descriptions :layout="descriptionsLayout" :column="1" :data="mobileFinger" bordered />
       </a-card>
     </div>
   </div>
@@ -14,6 +14,9 @@
 
 <script setup lang="ts">
 import Fingerprint2 from "fingerprintjs2";
+import { useLayoutModel } from "@/hooks/useLayoutModel";
+
+const { descriptionsLayout } = useLayoutModel();
 
 interface IComponents {
   key: string;

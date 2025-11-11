@@ -3,7 +3,7 @@
     <div class="snow-inner">
       <a-row :gutter="16">
         <a-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12" :xxl="12">
-          <a-form ref="formRef" auto-label-width :size="form.size" :model="form" @submit="handleSubmit">
+          <a-form ref="formRef" auto-label-width :layout="layout" :size="form.size" :model="form" @submit="handleSubmit">
             <a-form-item field="size" label="表单大小">
               <a-radio-group v-model="form.size" type="button">
                 <a-radio value="mini">迷你</a-radio>
@@ -99,6 +99,10 @@
 </template>
 
 <script setup lang="ts">
+import { useDevicesSize } from "@/hooks/useDevicesSize";
+
+const { isMobile } = useDevicesSize();
+const layout = computed(() => (isMobile.value ? "vertical" : "horizontal"));
 const handleSubmit = ({ values, errors }: any) => {
   console.log("values:", values, "\nerrors:", errors);
 };

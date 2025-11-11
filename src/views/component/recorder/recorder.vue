@@ -12,7 +12,7 @@
           <div class="waveview-box">
             <s-recorder-pcm ref="RecorderPCM" @change="onChange" />
           </div>
-          <a-space>
+          <a-space wrap>
             <a-button type="primary" @click="recOpen">打开录音权限</a-button>
             <a-button type="primary" @click="recStart">开始录音</a-button>
             <a-button @click="recStop">结束录音</a-button>
@@ -39,6 +39,10 @@
 
 <script setup lang="ts">
 import { isSecureEnvironment } from "@/utils/index";
+import { useDevicesSize } from "@/hooks/useDevicesSize";
+
+const { isMobile } = useDevicesSize();
+const waveviewWidth = computed(() => (isMobile.value ? "100%" : "400px"));
 
 const RecorderPCM = ref();
 
@@ -155,7 +159,7 @@ const writeString = (view: DataView, offset: number, string: string) => {
 <style lang="scss" scoped>
 .waveview-box {
   display: inline-block;
-  width: 400px;
+  width: v-bind(waveviewWidth);
   height: 100px;
   border: 1px solid $color-border-2;
 }

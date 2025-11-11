@@ -108,6 +108,9 @@
 <script setup lang="ts">
 import { getCommonTableListAPI } from "@/api/modules/table/index";
 import { List, FormData, RowSelection, Pagination } from "./config";
+import { useLayoutModel } from "@/hooks/useLayoutModel";
+
+const { tableFixed } = useLayoutModel();
 const formData = reactive<FormData>({
   form: {
     name: "",
@@ -168,7 +171,7 @@ const columns = [
     title: "操作",
     slotName: "optional",
     align: "center",
-    fixed: "right",
+    fixed: tableFixed.value,
     width: "200"
   }
 ];

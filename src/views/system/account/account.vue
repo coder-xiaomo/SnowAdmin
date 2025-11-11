@@ -81,7 +81,7 @@
                 </a-table-column>
                 <a-table-column title="描述" data-index="description" ellipsis tooltip></a-table-column>
                 <a-table-column title="创建时间" data-index="createTime" :width="180"></a-table-column>
-                <a-table-column title="操作" :width="200" align="center" :fixed="isMobile ? '' : 'right'">
+                <a-table-column title="操作" :width="200" align="center" :fixed="tableFixed">
                   <template #cell="{ record }">
                     <a-space>
                       <a-button type="primary" size="mini" @click="onUpdate(record)">
@@ -111,10 +111,10 @@
       </s-fold-page>
     </div>
 
-    <a-modal :width="layoutMode.width" v-model:visible="open" @close="afterClose" @ok="handleOk" @cancel="afterClose">
+    <a-modal :width="dialogWidth()" v-model:visible="open" @close="afterClose" @ok="handleOk" @cancel="afterClose">
       <template #title> {{ title }} </template>
       <div>
-        <a-form ref="formRef" auto-label-width :layout="layoutMode.layout" :rules="rules" :model="addFrom">
+        <a-form ref="formRef" auto-label-width :layout="formLayout" :rules="rules" :model="addFrom">
           <a-row :gutter="24">
             <a-col :span="12">
               <a-form-item field="userName" label="用户名称" validate-trigger="blur">
@@ -191,25 +191,12 @@
 <script setup lang="ts">
 import { getDivisionAPI, getAccountAPI, getRoleAPI } from "@/api/modules/system/index";
 import { deepClone } from "@/utils";
-import { useDevicesSize } from "@/hooks/useDevicesSize";
+import { useLayoutModel } from "@/hooks/useLayoutModel";
 
 const router = useRouter();
+const { dialogWidth, formLayout, tableFixed } = useLayoutModel();
 const openState = ref(dictFilter("status"));
 const sexOption = ref(dictFilter("gender"));
-const { isMobile } = useDevicesSize();
-const layoutMode = computed(() => {
-  let info = {
-    mobile: {
-      width: "95%",
-      layout: "vertical"
-    },
-    desktop: {
-      width: "40%",
-      layout: "horizontal"
-    }
-  };
-  return isMobile.value ? info.mobile : info.desktop;
-});
 const form = ref({
   name: "",
   phone: "",
