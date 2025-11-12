@@ -2,7 +2,7 @@
   <a-row align="center" :gutter="[0, 16]">
     <a-col :span="24">
       <a-card title="基本信息">
-        <a-form :model="form" :rules="rules" :layout="layoutMode" :style="{ maxWidth: '600px' }" @submit="onSubmit">
+        <a-form :model="form" :rules="rules" :layout="formLayout" :style="{ maxWidth: '600px' }" @submit="onSubmit">
           <a-form-item field="userName" label="用户名">
             <a-input v-model="form.userName" placeholder="请输入用户名" allow-clear />
           </a-form-item>
@@ -32,14 +32,13 @@
 
 <script setup lang="ts">
 import useGlobalProperties from "@/hooks/useGlobalProperties";
-import { useDevicesSize } from "@/hooks/useDevicesSize";
+import { useLayoutModel } from "@/hooks/useLayoutModel";
 
 const emit = defineEmits(["refresh"]);
 const proxy = useGlobalProperties();
 const data = defineModel() as any;
 const sexOption = ref(dictFilter("gender"));
-const { isMobile } = useDevicesSize();
-const layoutMode = computed(() => (isMobile.value ? "vertical" : "horizontal"));
+const { formLayout } = useLayoutModel();
 const form = ref({
   id: "",
   userName: "",
